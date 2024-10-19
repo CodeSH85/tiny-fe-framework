@@ -1,28 +1,20 @@
-let current: any;
+let context = () => {};
 
-function signal<T>(initValue: T): [() => T, (value: T) => void] {
+function useSignal<T>(initValue: T): [() => T, (value: T) => void] {
   let value = initValue;
-  const subscribers: any = [];
+  const subscribers: Set<() => void> = new Set();
+
   function get() {
-    subscribers.push(current);
+    subscribers.add(context);
     return value;
   }
   function set(newValue: T) {
     value = newValue;
-    subscribers.forEach((sub: any) => sub());
+    subscribers.forEach((sub) => {
+      if (sub && typeof sub === "function") sub();
+    });
   }
   return [get, set];
 }
 
-export function effect(fn: Function) {
-  current = fn;
-  fn();
-  current = null;
-}
-
-const [count, setCount] = signal(10);
-effect(() => {
-  console.log('changed');
-  console.log(count());
-});
-setCount(100);
+export { useSignal };
