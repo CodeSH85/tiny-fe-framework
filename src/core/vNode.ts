@@ -1,3 +1,5 @@
+import { isObject } from "../utils/helpers.js";
+
 type Children = (HTMLElement | string | number)[];
 
 type VNode = {
@@ -26,6 +28,16 @@ const createVNode = ({ tag, children, attr }: VNode) => {
     Object.entries(attr).forEach(([key, value]) => {
       if (typeof value === "function" && isValidEvent(key)) {
         root.addEventListener(key, value);
+      } else if (isObject(value)) {
+        if (key === 'style') {
+          Object.entries(value).forEach(([_key, _value]) => {
+            root.setAttribute('style', `${_key}: ${_value}`);
+          })
+        } else {
+          Object.entries(value).forEach(([_key, _value]) => {
+            root.setAttribute(_key, _value);
+          })
+        }
       } else {
         root.setAttribute(key, value);
       }
