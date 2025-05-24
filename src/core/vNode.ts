@@ -1,50 +1,38 @@
-import { isObject } from "../utils/helpers.js";
+export type Children = any[] | string | number | null | undefined
 
-type Children = (HTMLElement | string | number)[];
+export type Attributes = Record<string, any>
 
-type VNode = {
-  tag: string;
-  children?: Children;
-  attr?: object;
-};
+export type VNode = {
+  tag: string
+  children?: Children
+  attributes?: Attributes
+}
 
-const isValidEvent = (eventName: string) => {
-  return `on${eventName}` in document.createElement("div");
-};
-
-const createVNode = ({ tag, children, attr }: VNode) => {
-  if (typeof tag !== "string") throw new Error("Invalid tag.");
-  const root = document.createElement(tag);
-  if (children?.length) {
-    for (const child of children) {
-      if (typeof child === "string" || typeof child === "number") {
-        root.innerHTML = children.toString();
-      } else if (child instanceof HTMLElement) {
-        root.appendChild(child);
-      }
-    }
+/**
+ *
+ * @param {string} tag
+ * @param {Attributes} attributes
+ * @param {Children} children
+ * @returns
+ */
+export function vNode(
+  tag: string,
+  attributes: Attributes,
+  children: Children
+): VNode
+{
+  return {
+    tag,
+    attributes,
+    children
   }
-  if (attr) {
-    Object.entries(attr).forEach(([key, value]) => {
-      if (typeof value === "function" && isValidEvent(key)) {
-        root.addEventListener(key, value);
-      } else if (isObject(value)) {
-        if (key === 'style') {
-          Object.entries(value).forEach(([_key, _value]) => {
-            root.setAttribute('style', `${_key}: ${_value}`);
-          })
-        } else {
-          Object.entries(value).forEach(([_key, _value]) => {
-            root.setAttribute(_key, _value);
-          })
-        }
-      } else {
-        root.setAttribute(key, value);
-      }
-    });
-  }
-  return root;
-};
+}
 
-export { createVNode };
-export type { VNode };
+export function render(vNode: VNode): HTMLElement | void {
+  try {
+    const element = document.createElement(vNode.tag)
+    return element
+  } catch (error) {
+    console.error(error)
+  }
+}
