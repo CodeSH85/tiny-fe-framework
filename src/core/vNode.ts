@@ -1,6 +1,6 @@
-export type Children = any[] | string | number | null | undefined
+export type Children = unknown[] | string | number | null | undefined
 
-export type Attributes = Record<string, any>
+export type Attributes = Record<string, unknown>
 
 export type VNode = {
   tag: string
@@ -25,14 +25,5 @@ export function vNode(
     tag,
     attributes,
     children
-  }
-}
-
-export function render(vNode: VNode): HTMLElement | void {
-  try {
-    const element = document.createElement(vNode.tag)
-    return element
-  } catch (error) {
-    console.error(error)
   }
 }

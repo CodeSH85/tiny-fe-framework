@@ -1,4 +1,4 @@
-let context = () => {};
+const context = () => {};
 
 function useSignal<T>(initValue: T): [() => T, (value: T) => void] {
   let value = initValue;
@@ -11,7 +11,7 @@ function useSignal<T>(initValue: T): [() => T, (value: T) => void] {
   function set(newValue: T) {
     value = newValue;
     subscribers.forEach((sub) => {
-      if (sub && typeof sub === "function") sub();
+      if (sub && typeof sub === 'function') sub();
     });
   }
   return [get, set];
