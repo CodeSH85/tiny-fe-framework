@@ -1,11 +1,13 @@
 export type Children = unknown[] | string | number | null | undefined
 
-export type Attributes = Record<string, unknown>
+export type Attributes<T> = {
+  [key: string]: T
+}
 
-export type VNode = {
+export type VNode<T> = {
   tag: string
   children?: Children
-  attributes?: Attributes
+  attributes?: Attributes<T>
 }
 
 /**
@@ -15,11 +17,11 @@ export type VNode = {
  * @param {Children} children
  * @returns
  */
-export function vNode(
+export function vNode<T>(
   tag: string,
-  attributes: Attributes,
+  attributes: Attributes<T>,
   children: Children
-): VNode
+): VNode<T>
 {
   return {
     tag,
