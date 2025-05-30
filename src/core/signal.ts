@@ -1,20 +1,20 @@
-const context = () => {};
+const context = () => {}
 
 function useSignal<T>(initValue: T): [() => T, (value: T) => void] {
-  let value = initValue;
-  const subscribers: Set<() => void> = new Set();
+  let value = initValue
+  const subscribers: Set<() => void> = new Set()
 
   function get() {
-    subscribers.add(context);
-    return value;
+    subscribers.add(context)
+    return value
   }
   function set(newValue: T) {
-    value = newValue;
+    value = newValue
     subscribers.forEach((sub) => {
-      if (sub && typeof sub === 'function') sub();
-    });
+      if (sub && typeof sub === 'function') sub()
+    })
   }
-  return [get, set];
+  return [get, set]
 }
 
-export { useSignal };
+export { useSignal }
