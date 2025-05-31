@@ -23,7 +23,7 @@ export function render<T>(vNode: VNode<T>): HTMLElement | void {
   }
   if (vNode.children) {
     if (Array.isArray(vNode.children)) {
-      vNode.children.forEach(child => {
+      vNode.children.forEach((child) => {
         if (typeof child === 'string' || typeof child === 'number') {
           element.appendChild(document.createTextNode(child.toString()))
         } else if (child instanceof HTMLElement) {

@@ -1,6 +1,6 @@
-import { render } from "./core/render.js"
-import { useSignal } from "./core/signal.js"
-import { vNode } from "./core/vNode.js"
+import { render } from './core/render.js'
+import { useSignal } from './core/signal.js'
+import { vNode } from './core/vNode.js'
 
 const [ count, setCount ] = useSignal(10)
 
